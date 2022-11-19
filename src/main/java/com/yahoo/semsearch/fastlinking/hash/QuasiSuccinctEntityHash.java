@@ -30,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -186,7 +187,7 @@ public class QuasiSuccinctEntityHash extends AbstractEntityHash implements Seria
         HashMap<Integer, File> tempFiles = new HashMap<Integer, File>();
 
         LongArrayList cutPoints = new LongArrayList();
-        File tempFile = File.createTempFile( "values", "tempfile" );
+        File tempFile = Files.createTempFile( "values", "tempfile" ).toFile();
         tempFile.deleteOnExit();
         int batchNumber = 0;
         tempFiles.put( batchNumber, tempFile );
@@ -206,7 +207,7 @@ public class QuasiSuccinctEntityHash extends AbstractEntityHash implements Seria
             if( numberOfCandidates++ > ALIASESPERBATCH - 1 ) {
                 numberOfCandidates = 1;
                 batchNumber++;
-                tempFile = File.createTempFile( "values", "tempfile" );
+                tempFile = Files.createTempFile( "values", "tempfile" ).toFile();
                 tempFile.deleteOnExit();
                 values.close();
                 values = new DataOutputStream( new FastBufferedOutputStream( new FileOutputStream( tempFile ) ) );
